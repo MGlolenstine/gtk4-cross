@@ -8,7 +8,8 @@ cp target/x86_64-pc-windows-gnu/release/*.exe package
 
 export DLLS=`peldd package/*.exe -t --ignore-errors`
 for DLL in $DLLS
-    do cp /usr/x86_64-w64-mingw32/bin/"$DLL" package
+           #do cp /usr/x86_64-w64-mingw32/bin/"$DLL" package
+           do cp "$DLL" package
 done
 
 # Copy libgtk and few other dlls into package

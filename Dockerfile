@@ -36,6 +36,9 @@ ADD toolchain-mingw64.meson /usr/share/mingw
 #ENV PKG_CONFIG_PATH /usr/x86_64-w64-mingw32/lib/pkgconfig
 RUN cp /usr/x86_64-w64-mingw32/sys-root/mingw/include/windows.h /usr/x86_64-w64-mingw32/sys-root/mingw/include/Windows.h
 
+# Enable Iphlpapi (on windows, they're case-insensitive, on linux they're not.)
+RUN cp /usr/x86_64-w64-mingw32/sys-root/mingw/lib/libiphlpapi.a /usr/x86_64-w64-mingw32/sys-root/mingw/lib/libIphlpapi.a
+
 # Build and install GTK4
 WORKDIR /tmp/gtk
 RUN x86_64-meson build --wrap-mode=default
