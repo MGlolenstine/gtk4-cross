@@ -11,11 +11,15 @@ RUN make
 
 FROM fedora:rawhide
 COPY --from=0 /root/pe-util/build/peldd /usr/bin/peldd
-RUN dnf install git mingw64-binutils mingw64-gcc meson mingw64-pango mingw64-gdk-pixbuf mingw64-libepoxy mingw64-winpthreads-static wine cmake glib2-devel gcc zip boost boost-system -y && dnf clean all -y
+RUN dnf install git mingw64-binutils mingw64-gcc meson mingw64-pango mingw64-gdk-pixbuf mingw64-libepoxy mingw64-winpthreads-static glib2-devel gobject-introspection-devel vala wine cmake gcc zip boost boost-system -y && dnf clean all -y
 
 # Clone the gtk4 repository (Move after the mingw setup for efficiency later)
 WORKDIR /tmp
-RUN git clone https://gitlab.gnome.org/GNOME/gtk.git
+RUN git clone --depth 1 https://gitlab.gnome.org/GNOME/gtk.git
+
+# Clone the libadwaita repository (Move after the mingw setup for efficiency later)
+WORKDIR /tmp
+RUN git clone --depth 1 https://gitlab.gnome.org/GNOME/libadwaita.git
 
 # Make the meson use mingw
 ADD x86_64-meson /usr/bin
@@ -35,6 +39,11 @@ RUN cp /usr/x86_64-w64-mingw32/sys-root/mingw/include/windows.h /usr/x86_64-w64-
 # Enable Iphlpapi (on windows, they're case-insensitive, on linux they're not.)
 RUN cp /usr/x86_64-w64-mingw32/sys-root/mingw/lib/libiphlpapi.a /usr/x86_64-w64-mingw32/sys-root/mingw/lib/libIphlpapi.a
 
+# Add compiler paths
+ENV PKG_CONFIG_ALLOW_CROSS=1
+ENV PKG_CONFIG_PATH=/usr/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig/:/usr/x86_64-w64-mingw32/lib/pkgconfig/
+ENV GTK_INSTALL_PATH=/usr/x86_64-w64-mingw32/sys-root/mingw/
+
 # Build and install GTK4
 WORKDIR /tmp/gtk
 RUN x86_64-meson build --wrap-mode=default
@@ -42,10 +51,12 @@ WORKDIR /tmp/gtk/build
 RUN meson configure -Db_lto=false -Dc_link_args="['-lssp']"
 RUN ninja all && ninja install
 
-# Add compiler paths
-ENV PKG_CONFIG_ALLOW_CROSS=1
-ENV PKG_CONFIG_PATH=/usr/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig/:/usr/x86_64-w64-mingw32/lib/pkgconfig/
-ENV GTK_INSTALL_PATH=/usr/x86_64-w64-mingw32/sys-root/mingw/
+# Build and install libadwaita
+WORKDIR /tmp/libadwaita
+RUN x86_64-meson -Dintrospection=disabled -Dvapi=false build --wrap-mode=default
+WORKDIR /tmp/libadwaita/build
+RUN meson configure -Db_lto=false -Dc_link_args="['-lssp']"
+RUN ninja all && ninja install
 
 # Return to the current working directory
 WORKDIR /mnt
