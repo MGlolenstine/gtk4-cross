@@ -2,10 +2,10 @@ FROM fedora:latest
 WORKDIR /root
 RUN dnf install -y git cmake gcc-c++ boost-devel
 RUN git clone https://github.com/gsauthof/pe-util
-WORKDIR pe-util
+WORKDIR /root/pe-util
 RUN git submodule update --init
 RUN mkdir build
-WORKDIR build
+WORKDIR /root/pe-util/build
 RUN cmake .. -DCMAKE_BUILD_TYPE=Release
 RUN make
 
@@ -25,10 +25,6 @@ RUN chmod +x /usr/bin/x86_64-meson
 ADD mingw-env /usr/bin
 RUN chmod +x /usr/bin/mingw-env
 
-# Add package.sh
-ADD package.sh /usr/bin
-RUN chmod +x /usr/bin/package.sh
-
 # Update with the new toolchain file
 ADD toolchain-mingw64.meson /usr/share/mingw
 
@@ -42,17 +38,9 @@ RUN cp /usr/x86_64-w64-mingw32/sys-root/mingw/lib/libiphlpapi.a /usr/x86_64-w64-
 # Build and install GTK4
 WORKDIR /tmp/gtk
 RUN x86_64-meson build --wrap-mode=default
-WORKDIR build
+WORKDIR /tmp/gtk/build
 RUN meson configure -Db_lto=false -Dc_link_args="['-lssp']"
 RUN ninja all && ninja install
-
-# Setup rust
-RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
-RUN . ~/.cargo/env && \
-    rustup target add x86_64-pc-windows-gnu
-
-# Set default linker to the GCC linker
-ADD cargo.config /home/rust/.cargo/config
 
 # Add compiler paths
 ENV PKG_CONFIG_ALLOW_CROSS=1
