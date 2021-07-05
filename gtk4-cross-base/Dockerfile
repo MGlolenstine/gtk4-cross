@@ -46,7 +46,7 @@ ENV GTK_INSTALL_PATH=/usr/x86_64-w64-mingw32/sys-root/mingw/
 
 # Build and install GTK4
 WORKDIR /tmp/gtk
-RUN x86_64-meson build --wrap-mode=default
+RUN x86_64-meson build -Dintrospection=disabled --wrap-mode=default
 WORKDIR /tmp/gtk/build
 RUN meson configure -Db_lto=false -Dc_link_args="['-lssp']"
 RUN ninja all && ninja install
