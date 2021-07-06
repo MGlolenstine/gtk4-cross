@@ -53,6 +53,9 @@ FROM gtk4-cross-base
 ADD build.sh /usr/bin
 RUN chmod +x /usr/bin/build.sh
 
+ADD package.sh /usr/bin
+RUN chmod +x /usr/bin/package.sh
+
 CMD ["/bin/bash"]
 ```
 
