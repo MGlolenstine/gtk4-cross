@@ -1,0 +1,23 @@
+[binaries]
+c = '/usr/bin/x86_64-w64-mingw32-gcc'
+cpp = '/usr/bin/x86_64-w64-mingw32-g++'
+fortran = '/usr/bin/x86_64-w64-mingw32-gfortran'
+rust = ['rustc', '--target', 'x86_64-pc-windows-msvc', '-C', 'linker=/usr/bin/x86_64-w64-mingw32-gcc']
+ar = '/usr/bin/x86_64-w64-mingw32-ar'
+pkgconfig = '/usr/bin/x86_64-w64-mingw32-pkg-config'
+ranlib = '/usr/bin/x86_64-w64-mingw32-ranlib'
+strip = '/usr/bin/x86_64-w64-mingw32-strip'
+windres = '/usr/bin/x86_64-w64-mingw32-windres'
+dlltool = '/usr/bin/x86_64-w64-mingw32-dlltool'
+libgcrypt-config = '/usr/x86_64-w64-mingw32/sys-root/mingw/bin/libgcrypt-config'
+exe_wrapper = '/usr/bin/wine'
+
+[properties]
+root = '/usr/x86_64-w64-mingw32/sys-root/mingw'
+needs_exe_wrapper = true
+
+[host_machine]
+system = 'windows'
+cpu_family = 'x86_64'
+cpu = 'x86_64'
+endian = 'little'
