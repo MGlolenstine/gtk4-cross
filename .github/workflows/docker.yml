@@ -48,7 +48,7 @@ jobs:
         uses: docker/build-push-action@v2.2.2
         with:
           allow: security.insecure
-          context: gtk4-cross-base-hub
-          file: Dockerfile
+          context: ./gtk4-cross-base-hub
+          file: ./gtk4-cross-base-hub/Dockerfile
           push: true
           tags: aknarts/gtk4-cross:${{ matrix.runtime.name }}
