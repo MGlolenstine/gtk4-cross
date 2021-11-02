@@ -53,7 +53,7 @@ RUN ninja all && ninja install
 
 # Build and install libadwaita
 WORKDIR /tmp/libadwaita
-RUN x86_64-meson -Dintrospection=disabled -Dvapi=false build --wrap-mode=default
+RUN x86_64-meson -Dintrospection=disabled -Dexamples=false -Dvapi=false build --wrap-mode=default
 WORKDIR /tmp/libadwaita/build
 RUN meson configure -Db_lto=false -Dc_link_args="['-lssp']"
 RUN ninja all && ninja install
