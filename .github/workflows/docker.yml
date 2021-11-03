@@ -1,0 +1,56 @@
+on:
+  workflow_dispatch:
+
+name: Docker images
+
+jobs:
+  build-images:
+    name: Build & push Docker images
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        runtime:
+          - name: gtk-latest
+            gtktag: master
+            adwtag: main
+          - name: gtk-4.4
+            gtktag: 4.4.1
+            adwtag: 1.0.0.alpha.4
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1.1.1
+        with:
+          driver-opts: network=host
+
+      - name: Cache Docker layers for the base image
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Write the Dockerfile for the ${{ matrix.runtime.name }} runtime
+        run: |
+          sed -i 's/%GTKTAG%/${{matrix.runtime.gtktag}}/g' gtk4-cross-base-hub/Dockerfile && sed -i 's/%ADWTAG%/${{matrix.runtime.adwtag}}/g' gtk4-cross-base-hub/Dockerfile
+
+      - name: Build & push the ${{ matrix.runtime.name }} image to Docker Hub
+        uses: docker/build-push-action@v2.2.2
+        continue-on-error: true
+        with:
+          allow: security.insecure
+          context: ./gtk4-cross-base-hub
+          file: ./gtk4-cross-base-hub/Dockerfile
+          push: true
+          tags: aknarts/gtk4-cross:${{ matrix.runtime.name }}
