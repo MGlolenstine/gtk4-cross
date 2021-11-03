@@ -18,6 +18,20 @@ docker build gtk4-cross-base -t gtk4-cross-base
 docker build gtk4-cross-rust -t gtk4-cross-rust
 ```
 
+### Meson image
+
+```bash
+docker build gtk4-cross-meson -t gtk4-cross-meson
+```
+
+## Hosted images
+
+Images can also be found prebuilt.
+
+[gtk4-base](https://hub.docker.com/r/mglolenstine/gtk4-base)
+
+[gtk4-rust](https://hub.docker.com/r/mglolenstine/gtk4-rust)
+
 ## Cross compilation
 
 ### Rust project
@@ -30,7 +44,19 @@ docker run -ti -v `pwd`:/mnt gtk4-cross-rust
 
 Then run `build.sh` to build the project and `package.sh` to package it into a zip file.
 
-`package.zip` will be present in your project directory.
+`package.zip` will be present in your project directory after `package.sh` finishes.
+
+### Meson project
+
+Create a container inside your project and run it
+
+```bash
+docker run -ti -v `pwd`:/mnt gtk4-cross-meson
+```
+
+Then run `build.sh` to build the project and `package.sh` to package it into a zip file.
+
+`package.zip` will be present in your project directory after `package.sh` finishes.
 
 ## Image creation
 
