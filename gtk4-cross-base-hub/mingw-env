@@ -12,5 +12,5 @@ export CXXFLAGS="${MINGW_CXXFLAGS:-$default_mingw_compiler_flags $CXXFLAGS}"
 export LDFLAGS="${MINGW_LDFLAGS:-$default_mingw_linker_flags $LDFLAGS}"
 
 mingw_prefix=/usr/${_arch}
-export PKG_CONFIG_SYSROOT_DIR="${mingw_prefix}"
+export PKG_CONFIG_SYSROOT_DIR="${mingw_prefix}/sys-root/mingw"
 export PKG_CONFIG_LIBDIR="${mingw_prefix}/lib/pkgconfig:${mingw_prefix}/share/pkgconfig"
