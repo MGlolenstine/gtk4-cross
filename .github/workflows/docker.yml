@@ -1,6 +1,4 @@
 on:
-  schedule:
-    - cron: "0 0 * * */7" # This should run every hour
   workflow_dispatch:
 
 name: Docker images
@@ -13,6 +11,9 @@ jobs:
     strategy:
       matrix:
         runtime:
+          - name: gtk-latest
+            gtktag: master
+            adwtag: main
           - name: gtk-4.4
             gtktag: 4.4.1
             adwtag: 1.0.0.alpha.4
