@@ -1,4 +1,4 @@
-FROM mglolenstine/gtk4-base
+FROM aknarts/gtk4-cross:gtk-4.4
 
 RUN dnf install git mingw64-binutils mingw64-gcc meson mingw64-pango mingw64-gdk-pixbuf mingw64-libepoxy mingw64-sqlite mingw64-winpthreads-static glib2-devel gobject-introspection-devel mingw64-gstreamer1-plugins-bad-free vala wine cmake gcc zip boost sqlite sqlite-devel boost-system -y && dnf update -y && dnf clean all -y
 
