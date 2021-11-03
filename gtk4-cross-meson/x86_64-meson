@@ -12,16 +12,16 @@ then
 fi
 
 exec meson setup \
-  --libdir         /usr/x86_64-w64-mingw32/lib \
-  --libexecdir     /usr/x86_64-w64-mingw32/lib \
-  --bindir         /usr/x86_64-w64-mingw32/bin \
-  --sbindir        /usr/x86_64-w64-mingw32/bin \
-  --includedir     /usr/x86_64-w64-mingw32/include \
-  --datadir        /usr/x86_64-w64-mingw32/share \
-  --mandir         /usr/x86_64-w64-mingw32/share/man \
-  --infodir        /usr/x86_64-w64-mingw32/share/info \
-  --localedir      /usr/x86_64-w64-mingw32/share/locale \
-  --sysconfdir     /usr/x86_64-w64-mingw32/etc \
+  --libdir         /usr/x86_64-w64-mingw32/sys-root/mingw/lib \
+  --libexecdir     /usr/x86_64-w64-mingw32/sys-root/mingw/lib \
+  --bindir         /usr/x86_64-w64-mingw32/sys-root/mingw/bin \
+  --sbindir        /usr/x86_64-w64-mingw32/sys-root/mingw/bin \
+  --includedir     /usr/x86_64-w64-mingw32/sys-root/mingw/include \
+  --datadir        /usr/x86_64-w64-mingw32/sys-root/mingw/share \
+  --mandir         /usr/x86_64-w64-mingw32/sys-root/mingw/share/man \
+  --infodir        /usr/x86_64-w64-mingw32/sys-root/mingw/share/info \
+  --localedir      /usr/x86_64-w64-mingw32/sys-root/mingw/share/locale \
+  --sysconfdir     /usr/x86_64-w64-mingw32/sys-root/mingw/etc \
   --localstatedir  /var \
   --sharedstatedir /var/lib \
   --buildtype      release \
