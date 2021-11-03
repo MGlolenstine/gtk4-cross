@@ -1,14 +1,14 @@
 #!/bin/bash
 
 export DLLS=`peldd package/*.exe -t --ignore-errors`
+mkdir -p package
 for DLL in $DLLS
            #do cp /usr/x86_64-w64-mingw32/bin/"$DLL" package
            do cp "$DLL" package
 done
 
 # Copy libgtk and few other dlls into package
-cp /usr/x86_64-w64-mingw32/bin/*.dll package/
-cp /usr/x86_64-w64-mingw32/sys-root/mingw/bin/*.dll package/
+cp /usr/x86_64-w64-mingw32/sys-root/mingw/bin/*.dll package
 
 # Add gdbus which is recommended on Windows
 cp /usr/x86_64-w64-mingw32/sys-root/mingw/bin/gdbus.exe package
