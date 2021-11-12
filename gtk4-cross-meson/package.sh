@@ -16,7 +16,7 @@ cp /usr/x86_64-w64-mingw32/sys-root/mingw/bin/gdbus.exe package
 
 mkdir -p package/share/{themes,gtk-4.0,glib-2.0}
 #cp -r $GTK_INSTALL_PATH/share/glib-2.0/schemas package/share/glib-2.0/
-#cp -r $GTK_INSTALL_PATH/share/icons package/share/icons
+cp -r $GTK_INSTALL_PATH/share/icons package/share/icons
 
 if [ -z "$WIN_THEME" ]
 then
