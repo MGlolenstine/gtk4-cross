@@ -7,11 +7,11 @@ for DLL in $DLLS
 done
 
 # Copy libgtk and few other dlls into package
-cp /usr/x86_64-w64-mingw32/bin/*.dll package/
+#cp /usr/x86_64-w64-mingw32/bin/*.dll package/
 cp /usr/x86_64-w64-mingw32/sys-root/mingw/bin/*.dll package/
 
 # Add gdbus which is recommended on Windows
-cp /usr/x86_64-w64-mingw32/sys-root/mingw/bin/gdbus.exe package
+cp /usr/x86_64-w64-mingw32/sys-root/mingw/bin/gdbus.exe package/
 
 
 mkdir -p package/share/{themes,gtk-4.0,glib-2.0}

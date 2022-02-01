@@ -28,7 +28,7 @@ Create a container inside your project and run it
 docker run -ti -v `pwd`:/mnt gtk4-cross-rust
 ```
 
-Then run `build.sh` to build the project and `package.sh` to package it into a zip file.
+Then run `build` to build the project and `package` to package it into a zip file.
 
 `package.zip` will be present in your project directory.
 

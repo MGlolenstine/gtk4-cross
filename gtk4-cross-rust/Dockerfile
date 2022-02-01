@@ -1,12 +1,12 @@
-FROM gtk4-cross-base
+FROM mglolenstine/gtk4-cross:rust-gtk-4.6
 
 # Add build.sh
-ADD build.sh /usr/bin
-RUN chmod +x /usr/bin/build.sh
+ADD build.sh /usr/bin/build
+RUN chmod +x /usr/bin/build
 
 # Add package.sh
-ADD package.sh /usr/bin
-RUN chmod +x /usr/bin/package.sh
+ADD package.sh /usr/bin/package
+RUN chmod +x /usr/bin/package
 
 # Setup rust
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
