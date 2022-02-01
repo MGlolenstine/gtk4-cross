@@ -15,11 +15,11 @@ RUN dnf install git mingw64-binutils mingw64-gcc meson mingw64-pango mingw64-gdk
 
 # Clone the gtk4 repository (Move after the mingw setup for efficiency later)
 WORKDIR /tmp
-RUN git clone --depth 1 --branch "4.6.0" https://gitlab.gnome.org/GNOME/gtk.git
+RUN git clone --depth 1 --branch %GTKTAG% https://gitlab.gnome.org/GNOME/gtk.git
 
 # Clone the libadwaita repository (Move after the mingw setup for efficiency later)
 WORKDIR /tmp
-RUN git clone --depth 1 --branch "1.0.1" https://gitlab.gnome.org/GNOME/libadwaita.git
+RUN git clone --depth 1 --branch %ADWTAG% https://gitlab.gnome.org/GNOME/libadwaita.git
 
 # Make the meson use mingw
 ADD x86_64-meson /usr/bin
