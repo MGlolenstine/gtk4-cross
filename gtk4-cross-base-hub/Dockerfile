@@ -15,11 +15,11 @@ RUN dnf install git mingw64-binutils mingw64-gcc meson mingw64-pango mingw64-gdk
 
 # Clone the gtk4 repository (Move after the mingw setup for efficiency later)
 WORKDIR /tmp
-RUN git clone --depth 1 --branch %GTKTAG% https://gitlab.gnome.org/GNOME/gtk.git
+RUN git clone --depth 1 --branch "4.6.0" https://gitlab.gnome.org/GNOME/gtk.git
 
 # Clone the libadwaita repository (Move after the mingw setup for efficiency later)
 WORKDIR /tmp
-RUN git clone --depth 1 --branch %ADWTAG% https://gitlab.gnome.org/GNOME/libadwaita.git
+RUN git clone --depth 1 --branch "1.0.1" https://gitlab.gnome.org/GNOME/libadwaita.git
 
 # Make the meson use mingw
 ADD x86_64-meson /usr/bin
@@ -35,6 +35,8 @@ ADD toolchain-mingw64.meson /usr/share/mingw
 # Hacks for GTK4 to compile
 #ENV PKG_CONFIG_PATH /usr/x86_64-w64-mingw32/lib/pkgconfig
 RUN cp /usr/x86_64-w64-mingw32/sys-root/mingw/include/windows.h /usr/x86_64-w64-mingw32/sys-root/mingw/include/Windows.h
+
+RUN echo -e "#include <stdlib.h>\n$(cat /tmp/gtk/gdk/loaders/gdkjpeg.c)" > /tmp/gtk/gdk/loaders/gdkjpeg.c
 
 # Enable Iphlpapi (on windows, they're case-insensitive, on linux they're not.)
 RUN cp /usr/x86_64-w64-mingw32/sys-root/mingw/lib/libiphlpapi.a /usr/x86_64-w64-mingw32/sys-root/mingw/lib/libIphlpapi.a
