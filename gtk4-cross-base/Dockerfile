@@ -10,7 +10,12 @@ RUN cmake .. -DCMAKE_BUILD_TYPE=Release
 RUN make
 
 FROM fedora:latest
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
+RUN . ~/.cargo/env && cargo install --git https://github.com/MGlolenstine/peldd_dependency_scanner.git
+
+FROM fedora:latest
 COPY --from=0 /root/pe-util/build/peldd /usr/bin/peldd
+COPY --from=1 /root/.cargo/bin/peldd_dependency_scanner /usr/bin/pds
 RUN dnf install git mingw64-binutils mingw64-gcc meson mingw64-pango mingw64-gdk-pixbuf mingw64-libepoxy mingw64-winpthreads-static glib2-devel gobject-introspection-devel mingw64-gstreamer1-plugins-bad-free vala wine cmake gcc zip boost boost-system dos2unix -y && dnf clean all -y
 
 # Clone the gtk4 repository (Move after the mingw setup for efficiency later)
