@@ -1,4 +1,4 @@
-FROM mglolenstine/gtk4-cross:gtk-%GTKTAG%
+FROM mglolenstine/gtk4-cross:%GTKTAG%
 
 # Add build.sh
 ADD build.sh /usr/bin/build
