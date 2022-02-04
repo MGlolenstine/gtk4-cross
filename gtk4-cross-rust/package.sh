@@ -1,8 +1,8 @@
 #!/bin/bash
 
-export DLLS=`pds package/*.exe`
+export DLLS=`pds package/*.exe -f`
 for DLL in $DLLS; do
-    cp /usr/x86_64-w64-mingw32/bin/"$DLL" package
+    cp "$DLL" package
 	# cp "$DLL" package
 done
 
