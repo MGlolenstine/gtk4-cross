@@ -59,8 +59,8 @@ jobs:
           tags: mglolenstine/gtk4-cross:${{ matrix.runtime.name }}
       - name: Write the Dockerfile for the ${{ matrix.runtime.name }} runtime
         run: |
-          sed -i 's/%GTKTAG%/${{matrix.runtime.gtktag}}/g' gtk4-cross-rust/Dockerfile
-      - name: Build & push the rust-gtk${{ matrix.runtime.gtktag }} image to Docker Hub
+          sed -i 's/%GTKTAG%/${{matrix.runtime.name}}/g' gtk4-cross-rust/Dockerfile
+      - name: Build & push the rust${{ matrix.runtime.name }} image to Docker Hub
         uses: docker/build-push-action@v2.2.2
         continue-on-error: true
         with:
@@ -68,4 +68,4 @@ jobs:
           context: ./gtk4-cross-rust
           file: ./gtk4-cross-rust/Dockerfile
           push: true
-          tags: mglolenstine/gtk4-cross:rust-gtk${{ matrix.runtime.gtktag }}
+          tags: mglolenstine/gtk4-cross:rust-${{ matrix.runtime.name }}
