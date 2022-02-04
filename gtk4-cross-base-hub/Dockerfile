@@ -11,26 +11,29 @@ RUN make
 
 FROM fedora:latest
 COPY --from=0 /root/pe-util/build/peldd /usr/bin/peldd
-RUN dnf install git mingw64-binutils mingw64-gcc meson mingw64-pango mingw64-gdk-pixbuf mingw64-libepoxy mingw64-winpthreads-static glib2-devel gobject-introspection-devel mingw64-gstreamer1-plugins-bad-free vala wine cmake gcc zip boost boost-system -y && dnf clean all -y
+RUN dnf install git mingw64-binutils mingw64-gcc meson mingw64-pango mingw64-gdk-pixbuf mingw64-libepoxy mingw64-winpthreads-static glib2-devel gobject-introspection-devel mingw64-gstreamer1-plugins-bad-free vala wine cmake gcc zip boost boost-system dos2unix -y && dnf clean all -y
 
 # Clone the gtk4 repository (Move after the mingw setup for efficiency later)
 WORKDIR /tmp
-RUN git clone --depth 1 --branch %GTKTAG% https://gitlab.gnome.org/GNOME/gtk.git
+RUN git clone --depth 1 --branch "4.6.0" https://gitlab.gnome.org/GNOME/gtk.git
 
 # Clone the libadwaita repository (Move after the mingw setup for efficiency later)
 WORKDIR /tmp
-RUN git clone --depth 1 --branch %ADWTAG% https://gitlab.gnome.org/GNOME/libadwaita.git
+RUN git clone --depth 1 --branch "1.0.1" https://gitlab.gnome.org/GNOME/libadwaita.git
 
 # Make the meson use mingw
 ADD x86_64-meson /usr/bin
+RUN dos2unix /usr/bin/x86_64-meson
 RUN chmod +x /usr/bin/x86_64-meson
 
 # Add mingw-env
 ADD mingw-env /usr/bin
+RUN dos2unix /usr/bin/mingw-env
 RUN chmod +x /usr/bin/mingw-env
 
 # Update with the new toolchain file
 ADD toolchain-mingw64.meson /usr/share/mingw
+RUN dos2unix /usr/share/mingw/toolchain-mingw64.meson
 
 # Hacks for GTK4 to compile
 #ENV PKG_CONFIG_PATH /usr/x86_64-w64-mingw32/lib/pkgconfig

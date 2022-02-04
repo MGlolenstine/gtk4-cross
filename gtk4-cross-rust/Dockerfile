@@ -1,11 +1,13 @@
-FROM mglolenstine/gtk4-cross:rust-gtk-4.6
+FROM gtk4-cross-base-hub
 
 # Add build.sh
 ADD build.sh /usr/bin/build
+RUN dos2unix /usr/bin/build
 RUN chmod +x /usr/bin/build
 
 # Add package.sh
 ADD package.sh /usr/bin/package
+RUN dos2unix /usr/bin/package
 RUN chmod +x /usr/bin/package
 
 # Setup rust
