@@ -1,4 +1,4 @@
-FROM gtk4-cross-base-hub
+FROM mglolenstine/gtk4-cross:gtk-%GTKTAG%
 
 # Add build.sh
 ADD build.sh /usr/bin/build
