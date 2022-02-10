@@ -78,7 +78,7 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.GHCR_TOKEN }}
       - name: Write the Dockerfile for the ${{ matrix.runtime.name }} runtime
         run: |
           sed -i 's/%GTKTAG%/${{matrix.runtime.gtktag}}/g' gtk4-cross-base-hub/Dockerfile && sed -i 's/%ADWTAG%/${{matrix.runtime.adwtag}}/g' gtk4-cross-base-hub/Dockerfile
@@ -91,7 +91,7 @@ jobs:
           file: ./gtk4-cross-base-hub/Dockerfile
           push: true
           tags: mglolenstine/gtk4-cross:${{ matrix.runtime.name }}
-          
+
       - name: Write the Dockerfile for the ${{ matrix.runtime.name }} runtime
         run: |
           sed -i 's/%GTKTAG%/${{matrix.runtime.name}}/g' gtk4-cross-rust/Dockerfile
