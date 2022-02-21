@@ -10,6 +10,11 @@ ADD package.sh /usr/bin/package
 RUN dos2unix /usr/bin/package
 RUN chmod +x /usr/bin/package
 
+# Add package_with_icons.sh
+ADD package_with_icons.sh /usr/bin/package_with_icons
+RUN dos2unix /usr/bin/package_with_icons
+RUN chmod +x /usr/bin/package_with_icons
+
 # Setup rust
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
 RUN . ~/.cargo/env && \
