@@ -34,23 +34,25 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1.1.1
+      - name: Login to GitHub Container Repository
+        uses: docker/login-action@v1
         with:
-          driver-opts: network=host
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_TOKEN }}
 
-      - name: Cache Docker layers for the base image
-        uses: actions/cache@v2
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-
+          images: |
+            mglolenstine/gtk4-cross
+            ghcr.io/mglolenstine/gtk4-cross
+          tags: |
+            ${{ matrix.runtime.name }}
       - name: Write the Dockerfile for the ${{ matrix.runtime.name }} runtime
         run: |
           sed -i 's/%GTKTAG%/${{matrix.runtime.gtktag}}/g' gtk4-cross-base-hub/Dockerfile && sed -i 's/%ADWTAG%/${{matrix.runtime.adwtag}}/g' gtk4-cross-base-hub/Dockerfile
-
       - name: Build & push the ${{ matrix.runtime.name }} image to Docker Hub
         uses: docker/build-push-action@v2.2.2
         continue-on-error: true
@@ -59,11 +61,22 @@ jobs:
           context: ./gtk4-cross-base-hub
           file: ./gtk4-cross-base-hub/Dockerfile
           push: true
-          tags: mglolenstine/gtk4-cross:${{ matrix.runtime.name }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+        
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta_rust
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: |
+            mglolenstine/gtk4-cross
+            ghcr.io/mglolenstine/gtk4-cross
+          tags: |
+            rust-${{ matrix.runtime.name }}
       - name: Write the Dockerfile for the ${{ matrix.runtime.name }} runtime
         run: |
           sed -i 's/%GTKTAG%/${{matrix.runtime.name}}/g' gtk4-cross-rust/Dockerfile
-      - name: Build & push the rust${{ matrix.runtime.name }} image to Docker Hub
+      - name: Build & push the rust-${{ matrix.runtime.name }} image to Docker Hub
         uses: docker/build-push-action@v2.2.2
         continue-on-error: true
         with:
@@ -71,36 +84,5 @@ jobs:
           context: ./gtk4-cross-rust
           file: ./gtk4-cross-rust/Dockerfile
           push: true
-          tags: mglolenstine/gtk4-cross:rust-${{ matrix.runtime.name }}
-
-      - name: Login to GitHub Container Repository
-        uses: docker/login-action@v1
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GHCR_TOKEN }}
-          
-      - name: Write the Dockerfile for the ${{ matrix.runtime.name }} runtime
-        run: |
-          sed -i 's/%GTKTAG%/${{matrix.runtime.gtktag}}/g' gtk4-cross-base-hub/Dockerfile && sed -i 's/%ADWTAG%/${{matrix.runtime.adwtag}}/g' gtk4-cross-base-hub/Dockerfile
-      - name: Build & push the ${{ matrix.runtime.name }} image to GitHub Container Repository
-        uses: docker/build-push-action@v2.2.2
-        continue-on-error: true
-        with:
-          allow: security.insecure
-          context: ./gtk4-cross-base-hub
-          file: ./gtk4-cross-base-hub/Dockerfile
-          push: true
-          tags: ghcr.io/mglolenstine/gtk4-cross:${{ matrix.runtime.name }}
-      - name: Write the Dockerfile for the ${{ matrix.runtime.name }} runtime
-        run: |
-          sed -i 's/%GTKTAG%/${{matrix.runtime.name}}/g' gtk4-cross-rust/Dockerfile
-      - name: Build & push the rust${{ matrix.runtime.name }} image to GitHub Container Repository
-        uses: docker/build-push-action@v2.2.2
-        continue-on-error: true
-        with:
-          allow: security.insecure
-          context: ./gtk4-cross-rust
-          file: ./gtk4-cross-rust/Dockerfile
-          push: true
-          tags: ghcr.io/mglolenstine/gtk4-cross:rust-${{ matrix.runtime.name }}
+          tags: ${{ steps.meta_rust.outputs.tags }}
+          labels: ${{ steps.meta_rust.outputs.labels }}
