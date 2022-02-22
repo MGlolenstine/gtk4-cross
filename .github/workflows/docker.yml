@@ -15,7 +15,7 @@ jobs:
       matrix:
         runtime:
           - name: gtk-latest
-            gtktag: master
+            gtktag: main
             adwtag: main
           - name: gtk-4.4
             gtktag: 4.4.1
