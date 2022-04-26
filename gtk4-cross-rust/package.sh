@@ -20,7 +20,7 @@ mkdir -p package/share/{themes,gtk-4.0,glib-2.0}
 #cp -r $GTK_INSTALL_PATH/share/glib-2.0/schemas package/share/glib-2.0/
 #cp -r $GTK_INSTALL_PATH/share/icons package/share/icons
 
-find package -maxdepth 1 -type f -exec mingw-strip {} +
+find package -iname "*.dll" -or -iname "*.exe" -type f -exec mingw-strip {} +
 
 zip -qr package.zip package/*
 rm -rf package
