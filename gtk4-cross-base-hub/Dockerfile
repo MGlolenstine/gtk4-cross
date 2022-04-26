@@ -1,4 +1,4 @@
-FROM fedora:latest
+FROM fedora:34
 WORKDIR /root
 RUN dnf install -y git cmake gcc-c++ boost-devel
 RUN git clone https://github.com/gsauthof/pe-util
@@ -9,7 +9,7 @@ WORKDIR /root/pe-util/build
 RUN cmake .. -DCMAKE_BUILD_TYPE=Release
 RUN make
 
-FROM fedora:latest
+FROM fedora:34
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
 # RUN . ~/.cargo/env 
 # Set the rust linker to gcc
@@ -17,7 +17,7 @@ RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
 RUN dnf install -y gcc
 RUN . ~/.cargo/env && cargo install --git https://github.com/MGlolenstine/peldd_dependency_scanner.git
 
-FROM fedora:latest
+FROM fedora:34
 COPY --from=0 /root/pe-util/build/peldd /usr/bin/peldd
 COPY --from=1 /root/.cargo/bin/peldd_dependency_scanner /usr/bin/pds
 RUN dnf install git mingw64-binutils mingw64-gcc meson mingw64-pango mingw64-gdk-pixbuf mingw64-libepoxy mingw64-winpthreads-static glib2-devel gobject-introspection-devel mingw64-gstreamer1-plugins-bad-free vala wine cmake gcc zip boost boost-system dos2unix -y && dnf clean all -y
@@ -47,7 +47,6 @@ RUN dos2unix /usr/share/mingw/toolchain-mingw64.meson
 # Hacks for GTK4 to compile
 #ENV PKG_CONFIG_PATH /usr/x86_64-w64-mingw32/lib/pkgconfig
 RUN cp /usr/x86_64-w64-mingw32/sys-root/mingw/include/windows.h /usr/x86_64-w64-mingw32/sys-root/mingw/include/Windows.h
-
 
 RUN if [[ -e /tmp/gtk/gdk/loaders/gdkjpeg.c ]] ; then echo -e "#include <stdlib.h>\n$(cat /tmp/gtk/gdk/loaders/gdkjpeg.c)" > /tmp/gtk/gdk/loaders/gdkjpeg.c ; fi
 
