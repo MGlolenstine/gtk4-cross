@@ -1,5 +1,6 @@
 #!/bin/bash
-source ~/.cargo/env
+# shellcheck source=/dev/null
+source "$HOME/.cargo/env"
 cargo build --target=x86_64-pc-windows-gnu --release
 
 mkdir -p package

@@ -1,6 +1,8 @@
 #!/bin/bash
+set -euo pipefail
+DLLS=$(pds package/*.exe -f)
+export DLLS
 
-export DLLS=`pds package/*.exe -f`
 for DLL in $DLLS; do
     cp "$DLL" package
 	# cp "$DLL" package
