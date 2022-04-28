@@ -21,6 +21,6 @@ RUN . ~/.cargo/env && \
     rustup target add x86_64-pc-windows-gnu
 
 # Set default linker to the GCC linker
-ADD cargo.config /home/rust/.cargo/config
+ADD cargo.config ~/.cargo/config
 
 CMD ["/bin/bash"]
