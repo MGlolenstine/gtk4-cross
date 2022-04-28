@@ -1,6 +1,8 @@
 #!/bin/bash
+set -euo pipefail
+DLLS=$(pds package/*.exe -f)
+export DLLS
 
-export DLLS=`pds package/*.exe -f`
 for DLL in $DLLS; do
     cp "$DLL" package
 	# cp "$DLL" package
@@ -18,7 +20,7 @@ mkdir -p package/share/{themes,gtk-4.0,glib-2.0}
 #cp -r $GTK_INSTALL_PATH/share/glib-2.0/schemas package/share/glib-2.0/
 #cp -r $GTK_INSTALL_PATH/share/icons package/share/icons
 
-find package -maxdepth 1 -type f -exec mingw-strip {} +
+find package -iname "*.dll" -or -iname "*.exe" -type f -exec mingw-strip {} +
 
 zip -qr package.zip package/*
 rm -rf package

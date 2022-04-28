@@ -1,22 +1,32 @@
 # GTK4 Cross compile for Windows
 
+## Prebuilt images
+
+Images can be found on [DockerHub](https://hub.docker.com/r/mglolenstine/gtk4-cross/tags) or [GitHub container repository](https://github.com/MGlolenstine/gtk4-cross/pkgs/container/gtk4-cross).
+
 ## Image building
 
 To create required images, clone the repository and cd into the root.
 
 To build any images other than the base one, you will need to have prebuilt the base image.
 
-### Base image
+### Build script
 
-```bash
-docker build gtk4-cross-base -t gtk4-cross-base
-```
+There's a file `build_image.sh` present in the root of the repository.
+It takes environment variables and one cmdline argument to build the image you want.
 
-### Rust image
+|ENV|Default|Description|
+|---|---|---|
+|GTK|"main"|GTK version to be built|
+|ADW|"main"|ADW version to be built|
+|BASE|"gtk4-cross-base-$GTK-$ADW"|Base image name for Docker, only used on images built on top of the base image|
+|TAG|"$IMAGE-$GTK-$ADW"|A name set for the output image|
 
-```bash
-docker build gtk4-cross-rust -t gtk4-cross-rust
-```
+The script takes one argument, which can be
+|Argument|Description|
+|---|---|
+|`base`|Which builds the base image.|
+|`rust`|Which builds the rust image.|
 
 ## Cross compilation
 
