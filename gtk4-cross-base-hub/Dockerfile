@@ -1,4 +1,4 @@
-FROM fedora:34
+FROM fedora:36
 WORKDIR /root
 RUN dnf install -y git cmake gcc-c++ boost-devel
 RUN git clone https://github.com/gsauthof/pe-util
@@ -9,7 +9,7 @@ WORKDIR /root/pe-util/build
 RUN cmake .. -DCMAKE_BUILD_TYPE=Release
 RUN make
 
-FROM fedora:34
+FROM fedora:36
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
 # RUN . ~/.cargo/env 
 # Set the rust linker to gcc
@@ -17,10 +17,10 @@ RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
 RUN dnf install -y gcc
 RUN . ~/.cargo/env && cargo install --git https://github.com/MGlolenstine/peldd_dependency_scanner.git
 
-FROM fedora:34
+FROM fedora:36
 COPY --from=0 /root/pe-util/build/peldd /usr/bin/peldd
 COPY --from=1 /root/.cargo/bin/peldd_dependency_scanner /usr/bin/pds
-RUN dnf install git mingw64-binutils mingw64-gcc meson mingw64-pango mingw64-gdk-pixbuf mingw64-libepoxy mingw64-winpthreads-static glib2-devel gobject-introspection-devel mingw64-gstreamer1-plugins-bad-free vala wine cmake gcc zip boost boost-system dos2unix -y && dnf clean all -y
+RUN dnf install git mingw64-binutils mingw64-gcc meson mingw64-pango mingw64-gdk-pixbuf mingw64-libepoxy mingw64-winpthreads-static glib2-devel gobject-introspection-devel mingw64-gstreamer1-plugins-bad-free vala wine cmake gcc zip boost boost-system dos2unix sassc -y && dnf clean all -y
 
 # Clone the gtk4 repository (Move after the mingw setup for efficiency later)
 WORKDIR /tmp
