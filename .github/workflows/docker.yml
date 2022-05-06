@@ -14,15 +14,15 @@ jobs:
     strategy:
       matrix:
         runtime:
-          - name: gtk-latest
+          - name: gtk-nightly
             gtktag: main
             adwtag: main
           - name: gtk-4.4
             gtktag: 4.4.1
             adwtag: 1.0.0.alpha.4
           - name: gtk-4.6
-            gtktag: 4.6.0
-            adwtag: 1.0.1
+            gtktag: 4.6.3
+            adwtag: 1.1.1
       fail-fast: false
 
     steps:
