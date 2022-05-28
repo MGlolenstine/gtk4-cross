@@ -20,7 +20,7 @@ RUN . ~/.cargo/env && cargo install --git https://github.com/MGlolenstine/peldd_
 FROM fedora:36
 COPY --from=0 /root/pe-util/build/peldd /usr/bin/peldd
 COPY --from=1 /root/.cargo/bin/peldd_dependency_scanner /usr/bin/pds
-RUN dnf install git mingw64-binutils mingw64-gcc meson mingw64-pango mingw64-gdk-pixbuf mingw64-libepoxy mingw64-winpthreads-static glib2-devel gobject-introspection-devel mingw64-gstreamer1-plugins-bad-free vala wine cmake gcc zip boost boost-system dos2unix sassc -y && dnf clean all -y
+RUN dnf install git mingw64-binutils mingw64-gcc meson mingw64-pango mingw64-gdk-pixbuf mingw64-libepoxy mingw64-winpthreads-static glib2-devel gobject-introspection-devel mingw64-gstreamer1-plugins-bad-free vala wine cmake gcc zip boost boost-system dos2unix sassc mingw64-librsvg2 intltool itstool gtk-update-icon-cache adwaita-icon-theme mingw64-adwaita-icon-theme mingw64-gettext -y && dnf clean all -y
 
 # Clone the gtk4 repository (Move after the mingw setup for efficiency later)
 WORKDIR /tmp
@@ -56,7 +56,12 @@ RUN cp /usr/x86_64-w64-mingw32/sys-root/mingw/lib/libiphlpapi.a /usr/x86_64-w64-
 # Add compiler paths
 ENV PKG_CONFIG_ALLOW_CROSS=1
 ENV PKG_CONFIG_PATH=/usr/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig/:/usr/x86_64-w64-mingw32/lib/pkgconfig/
-ENV GTK_INSTALL_PATH=/usr/x86_64-w64-mingw32/sys-root/mingw/
+ENV GTK_INSTALL_PATH=/usr/x86_64-w64-mingw32/sys-root/mingw
+ENV MINGW_PREFIX=/usr/x86_64-w64-mingw32/sys-root/mingw
+
+# Fix paths in the pixbuf loaders.cache
+RUN wine /usr/x86_64-w64-mingw32/sys-root/mingw/bin/gdk-pixbuf-query-loaders.exe --update-cache
+
 
 # Build and install GTK4
 WORKDIR /tmp/gtk
