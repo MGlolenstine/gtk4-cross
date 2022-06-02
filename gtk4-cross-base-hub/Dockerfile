@@ -61,8 +61,9 @@ ENV GTK_INSTALL_PATH=/usr/x86_64-w64-mingw32/sys-root/mingw
 ENV MINGW_PREFIX=/usr/x86_64-w64-mingw32/sys-root/mingw
 
 # Fix paths in the pixbuf loaders.cache
-RUN wine /usr/x86_64-w64-mingw32/sys-root/mingw/bin/gdk-pixbuf-query-loaders.exe --update-cache
-
+    # Required for gdk-pixbuf-query-loaders.exe and other tools to work
+ENV LANG="en_GB.utf8"
+RUN wine $MINGW_PREFIX/bin/gdk-pixbuf-query-loaders.exe --update-cache
 
 # Build and install GTK4
 WORKDIR /tmp/gtk
