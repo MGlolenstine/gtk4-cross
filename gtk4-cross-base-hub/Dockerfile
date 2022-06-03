@@ -69,7 +69,7 @@ RUN wine $MINGW_PREFIX/bin/gdk-pixbuf-query-loaders.exe --update-cache
 WORKDIR /tmp/gtk
 RUN x86_64-meson build -Dintrospection=disabled --wrap-mode=default
 WORKDIR /tmp/gtk/build
-RUN meson configure -Db_lto=false -Dc_link_args="['-lssp']" -Dc_args=-DG_ENABLE_DEBUG
+RUN meson configure -Db_lto=false -Dc_link_args="['-lssp']" -Dc_args=-DG_ENABLE_DEBUG -Dtracker=disabled
 RUN ninja all && ninja install
 
 # Build and install libadwaita
