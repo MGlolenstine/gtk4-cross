@@ -41,6 +41,11 @@ ADD mingw-env /usr/bin
 RUN dos2unix /usr/bin/mingw-env
 RUN chmod +x /usr/bin/mingw-env
 
+# Add package.sh
+ADD package.sh /usr/bin/package
+RUN dos2unix /usr/bin/package
+RUN chmod +x /usr/bin/package
+
 # Update with the new toolchain file
 ADD toolchain-mingw64.meson /usr/share/mingw
 RUN dos2unix /usr/share/mingw/toolchain-mingw64.meson
