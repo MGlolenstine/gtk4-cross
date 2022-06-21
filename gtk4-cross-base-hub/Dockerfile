@@ -20,7 +20,7 @@ RUN . ~/.cargo/env && cargo install --git https://github.com/MGlolenstine/peldd_
 FROM fedora:36
 COPY --from=0 /root/pe-util/build/peldd /usr/bin/peldd
 COPY --from=1 /root/.cargo/bin/peldd_dependency_scanner /usr/bin/pds
-RUN dnf install git mingw64-binutils mingw64-gcc meson mingw64-pango mingw64-gdk-pixbuf mingw64-libepoxy mingw64-winpthreads-static glib2-devel gobject-introspection-devel mingw64-gstreamer1-plugins-bad-free vala wine cmake gcc zip boost boost-system dos2unix sassc mingw64-librsvg2 intltool itstool gtk-update-icon-cache adwaita-icon-theme mingw64-adwaita-icon-theme mingw64-gettext -y && dnf clean all -y
+RUN dnf install git mingw64-binutils mingw64-gcc meson mingw64-pango mingw64-gdk-pixbuf mingw64-libepoxy mingw64-winpthreads-static glib2-devel gobject-introspection-devel mingw64-gstreamer1-plugins-bad-free vala wine-7.2-1.fc36 cmake gcc zip boost boost-system dos2unix sassc mingw64-librsvg2 intltool itstool gtk-update-icon-cache adwaita-icon-theme mingw64-adwaita-icon-theme mingw64-gettext -y && dnf clean all -y
 
 # Clone the gtk4 repository (Move after the mingw setup for efficiency later)
 WORKDIR /tmp
@@ -40,6 +40,11 @@ RUN chmod +x /usr/bin/x86_64-meson
 ADD mingw-env /usr/bin
 RUN dos2unix /usr/bin/mingw-env
 RUN chmod +x /usr/bin/mingw-env
+
+# Add package.sh
+ADD package.sh /usr/bin/package
+RUN dos2unix /usr/bin/package
+RUN chmod +x /usr/bin/package
 
 # Update with the new toolchain file
 ADD toolchain-mingw64.meson /usr/share/mingw
@@ -63,7 +68,9 @@ ENV MINGW_PREFIX=/usr/x86_64-w64-mingw32/sys-root/mingw
 # Fix paths in the pixbuf loaders.cache
     # Required for gdk-pixbuf-query-loaders.exe and other tools to work
 ENV LANG="en_GB.utf8"
+RUN wine --version
 RUN wine $MINGW_PREFIX/bin/gdk-pixbuf-query-loaders.exe --update-cache
+
 
 # Build and install GTK4
 WORKDIR /tmp/gtk
