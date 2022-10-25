@@ -4,6 +4,38 @@
 
 Images can be found on [DockerHub](https://hub.docker.com/r/mglolenstine/gtk4-cross/tags) or [GitHub container repository](https://github.com/MGlolenstine/gtk4-cross/pkgs/container/gtk4-cross).
 
+### To pull from DockerHub
+Example for GTK 4.6:
+```
+docker pull mglolenstine/gtk4-cross:rust-gtk-4.6 
+```
+
+### To pull from GitHub container repository
+Example for GTK 4.6:
+```
+docker pull ghcr.io/mglolenstine/gtk4-cross:rust-gtk-4.6 
+```
+
+## Cross compilation
+
+### Rust project
+
+Create a container inside your project and run it
+
+```bash
+docker run -ti -v `pwd`:/mnt gtk4-cross-rust
+```
+
+If your Docker host uses SELinux and you're getting errors about Cargo.toml not being found when trying to build, you may need to add `:z` to the end of the volume mount path, like so:
+
+```bash
+docker run -ti -v `pwd`:/mnt:z gtk4-cross-rust
+```
+
+Then run `build` to build the project and `package` to package it into a zip file.
+
+`package.zip` will be present in your project directory.
+
 ## Image building
 
 To create required images, clone the repository and cd into the root.
@@ -27,26 +59,6 @@ The script takes one argument, which can be
 |---|---|
 |`base`|Which builds the base image.|
 |`rust`|Which builds the rust image.|
-
-## Cross compilation
-
-### Rust project
-
-Create a container inside your project and run it
-
-```bash
-docker run -ti -v `pwd`:/mnt gtk4-cross-rust
-```
-
-If your Docker host uses SELinux and you're getting errors about Cargo.toml not being found when trying to build, you may need to add `:z` to the end of the volume mount path, like so:
-
-```bash
-docker run -ti -v `pwd`:/mnt:z gtk4-cross-rust
-```
-
-Then run `build` to build the project and `package` to package it into a zip file.
-
-`package.zip` will be present in your project directory.
 
 ## Image creation
 
