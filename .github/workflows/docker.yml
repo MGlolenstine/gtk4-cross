@@ -17,12 +17,12 @@ jobs:
           - name: gtk-nightly
             gtktag: main
             adwtag: main
-          - name: gtk-4.4
-            gtktag: 4.4.1
-            adwtag: 1.0.0.alpha.4
           - name: gtk-4.6
             gtktag: 4.6.3
             adwtag: 1.1.1
+          - name: gtk-4.8
+            gtktag: 4.8.2
+            adwtag: 1.2.0
       fail-fast: false
 
     steps:

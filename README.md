@@ -6,18 +6,18 @@ Images can be found on [DockerHub](https://hub.docker.com/r/mglolenstine/gtk4-cr
 
 ### To pull from DockerHub
 
-Example for GTK 4.6:
+Example for GTK 4.8:
 
 ```bash
-docker pull mglolenstine/gtk4-cross:rust-gtk-4.6 
+docker pull mglolenstine/gtk4-cross:rust-gtk-4.8
 ```
 
 ### To pull from GitHub container repository
 
-Example for GTK 4.6:
+Example for GTK 4.8:
 
 ```bash
-docker pull ghcr.io/mglolenstine/gtk4-cross:rust-gtk-4.6 
+docker pull ghcr.io/mglolenstine/gtk4-cross:rust-gtk-4.8
 ```
 
 ## Cross compilation
