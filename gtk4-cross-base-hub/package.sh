@@ -12,6 +12,8 @@ mkdir -p $OUT
 
 # Add gdbus (https://discourse.gnome.org/t/gtk-warning-about-gdbus-exe-not-being-found-on-windows-msys2/2893/2)
 cp $MINGW_PREFIX/bin/gdbus.exe $OUT
+# Add gspawn binaries for launching external processes (https://gitlab.gnome.org/GNOME/glib/-/issues/2843#note_1625472)
+cp $MINGW_PREFIX/bin/gspawn-win64-helper-console.exe $MINGW_PREFIX/bin/gspawn-win64-helper.exe $OUT
 
 # Handle the glib schema compilation as well
 glib-compile-schemas $MINGW_PREFIX/share/glib-2.0/schemas/
