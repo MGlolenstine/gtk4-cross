@@ -1,4 +1,4 @@
-FROM fedora:36
+FROM fedora:37
 WORKDIR /root
 RUN dnf install -y git cmake gcc-c++ boost-devel
 RUN git clone https://github.com/gsauthof/pe-util
@@ -9,7 +9,7 @@ WORKDIR /root/pe-util/build
 RUN cmake .. -DCMAKE_BUILD_TYPE=Release
 RUN make
 
-FROM fedora:36
+FROM fedora:37
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
 # RUN . ~/.cargo/env 
 # Set the rust linker to gcc
@@ -17,15 +17,14 @@ RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
 RUN dnf install -y gcc
 RUN . ~/.cargo/env && cargo install --git https://github.com/MGlolenstine/peldd_dependency_scanner.git
 
-FROM fedora:36
+FROM fedora:37
 COPY --from=0 /root/pe-util/build/peldd /usr/bin/peldd
 COPY --from=1 /root/.cargo/bin/peldd_dependency_scanner /usr/bin/pds
-RUN dnf install git mingw64-binutils mingw64-gcc meson mingw64-pango mingw64-gdk-pixbuf mingw64-libepoxy mingw64-winpthreads-static glib2-devel gobject-introspection-devel mingw64-gstreamer1-plugins-bad-free vala wine-7.2-1.fc36 cmake gcc zip boost boost-system dos2unix sassc mingw64-librsvg2 intltool itstool gtk-update-icon-cache adwaita-icon-theme mingw64-adwaita-icon-theme mingw64-gettext -y && dnf clean all -y
+RUN dnf install git mingw64-binutils mingw64-gcc meson mingw64-pango mingw64-gdk-pixbuf mingw64-libepoxy mingw64-winpthreads-static glib2-devel gobject-introspection-devel mingw64-gstreamer1-plugins-bad-free vala wine cmake gcc zip boost boost-system dos2unix sassc mingw64-librsvg2 intltool itstool gtk-update-icon-cache adwaita-icon-theme mingw64-adwaita-icon-theme mingw64-gettext -y && dnf clean all -y
 
 # Clone the gtk4 repository (Move after the mingw setup for efficiency later)
 WORKDIR /tmp
 RUN git clone --branch %GTKTAG% https://gitlab.gnome.org/GNOME/gtk.git
-RUN git -C gtk cherry-pick -n dae892d8f6b7e5402360e7a66803814d86360fc5
 
 # Clone the libadwaita repository (Move after the mingw setup for efficiency later)
 WORKDIR /tmp
