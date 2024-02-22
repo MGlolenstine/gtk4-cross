@@ -36,8 +36,18 @@ If your Docker host uses SELinux and you're getting errors about Cargo.toml not 
 docker run -ti -v `pwd`:/mnt:z gtk4-cross-rust
 ```
 
-Then run `build` to build the project and `package` to package it into a zip file.
+Then run `build` to build the project and `package` to package it into a directory with all needed dependencies.
 
+### Archiving the executables
+
+To create an archive from the directory, you could run the following commands:
+
+```bash
+dnf install -y zip 
+zip -qr package.zip package/*
+rm -rf package
+```
+  
 `package.zip` will be present in your project directory.
 
 ## Image building
