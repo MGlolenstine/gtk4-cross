@@ -3,6 +3,7 @@ set -euo pipefail
 
 GTK=${GTK:-"main"}
 ADW=${ADW:-"main"}
+FEDORA=${FEDORA:-"40"}
 BASE=${BASE:-"gtk4-cross-base-$GTK-$ADW"}
 
 if [[ $1 == "base" ]]; then
@@ -25,6 +26,7 @@ cp -rL "$IMAGE" "tmp/"
 sed -i "s/FROM mglolenstine\/gtk4-cross:%GTKTAG%/FROM $BASE/g" "tmp/$IMAGE/Dockerfile"
 # Replace GTK and Adwaita versions.
 sed -i "s/%GTKTAG%/$GTK/g" "tmp/$IMAGE/Dockerfile" && sed -i "s/%ADWTAG%/$ADW/g" "tmp/$IMAGE/Dockerfile"
+sed -i "s/%FEDORATAG%/$FEDORA/g" "tmp/$IMAGE/Dockerfile"
 
 cd "tmp/$IMAGE" || exit
 # Start the image build.

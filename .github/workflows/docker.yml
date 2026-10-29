@@ -20,12 +20,35 @@ jobs:
           - name: gtk-4.6
             gtktag: 4.6.3
             adwtag: 1.1.1
+            fedora: 45
           - name: gtk-4.8
             gtktag: 4.8.2
             adwtag: 1.2.0
+            fedora: 45
           - name: gtk-4.10
             gtktag: 4.10.0
             adwtag: 1.3.2
+            fedora: 45
+          - name: gtk-4.12
+            gtktag: 4.12.4
+            adwtag: 1.3.6
+            fedora: 45
+          - name: gtk-4.14
+            gtktag: 4.14.5
+            adwtag: 1.5.8
+            fedora: 45
+          - name: gtk-4.18
+            gtktag: 4.18.6
+            adwtag: 1.7.12
+            fedora: 45
+          - name: gtk-4.22
+            gtktag: 4.22.5
+            adwtag: 1.9.4
+            fedora: 45
+          - name: gtk-4.24
+            gtktag: 4.24.1
+            adwtag: 1.10.0
+            fedora: 45
       fail-fast: false
 
     steps:
@@ -33,13 +56,13 @@ jobs:
         uses: actions/checkout@v2.3.4
 
       - name: Login to Docker Hub
-        uses: docker/login-action@v1
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Login to GitHub Container Repository
-        uses: docker/login-action@v1
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
@@ -56,6 +79,7 @@ jobs:
             ${{ matrix.runtime.name }}
       - name: Write the Dockerfile for the ${{ matrix.runtime.name }} runtime
         run: |
+          sed -i 's/%FEDORATAG%/${{ matrix.runtime.fedora || 40 }}/g' gtk4-cross-base-hub/Dockerfile
           sed -i 's/%GTKTAG%/${{matrix.runtime.gtktag}}/g' gtk4-cross-base-hub/Dockerfile && sed -i 's/%ADWTAG%/${{matrix.runtime.adwtag}}/g' gtk4-cross-base-hub/Dockerfile
       - name: Build & push the ${{ matrix.runtime.name }} image to Docker Hub
         uses: docker/build-push-action@v2.2.2
